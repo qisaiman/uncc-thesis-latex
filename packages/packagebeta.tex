@@ -1,0 +1,149 @@
+
+\usepackage{microtype} % better layout
+%%-- mathmatical symbols and equations-----
+\usepackage{amsmath,amsthm}
+\usepackage{ifluatex}
+% Note: When switching the compiler, delete the .aux file.
+\ifluatex
+
+\usepackage{fontspec} % to compile with LuaLatex
+\setmainfont{Times New Roman} % to compile with LuaLatex
+\usepackage{unicode-math}
+\setmathfont{Asana-Math.otf} % latinmodern-math or xits-math
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\usepackage{csquotes}% Recommended
+
+\else
+
+%----inherent of article class-------%
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+\usepackage{charter} % nice font
+\usepackage{amssymb}
+\usepackage{csquotes}% Recommended
+\usepackage[english]{babel}% Recommended
+
+\fi
+
+\usepackage{graphicx} % support the \includegraphics command and options
+% check pdftex option
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+
+\usepackage{placeins} % for float and \FloatBarrier command
+
+\usepackage{subfig} % inconsistent with subcaption package
+\usepackage{float} % for images
+ \graphicspath{{./images/}} %--
+
+\usepackage[font={small,onehalfspacing}]{caption}
+\captionsetup[table]{belowskip=0pt}
+\captionsetup[figure]{belowskip=-10pt}
+
+% It supplies a landscape environment, and anything inside is basically rotated.http://en.wikibooks.org/wiki/LaTeX/Page_Layout
+%\usepackage{lscape}
+%\usepackage{pdflscape}
+\usepackage{rotating} % use \begin{sidewaystable}
+% Helps format tables using the \toprule, \midrule, and \bottomrule commands (http://en.wikibooks.org/wiki/LaTeX/Tables#Using_booktabs)
+\usepackage{booktabs}
+%\usepackage{multirow} for multirow in tables
+%  Helps format tables (http://en.wikibooks.org/wiki/LaTeX/Tables#Using_array)
+
+% for chemical formula, subscripts etc
+\usepackage[version=3]{mhchem}
+\usepackage{siunitx}
+
+%------- bibliography and citation ------
+\usepackage[style=numeric-comp,
+		    sorting=none,
+            hyperref=true,
+            url=false,
+            isbn=true,
+            doi=false,
+            backref=true,
+            maxcitenames=2,
+            maxbibnames=4,
+            block=none,
+            backend=biber,
+            natbib=true]{biblatex}
+\DeclareSourcemap{
+    \maps[datatype=bibtex]{
+        \map{
+            \step[fieldset=abstract,null]
+        }
+    }
+}
+
+%\defbibheading{name}[title]{code}
+
+\DefineBibliographyStrings{english}{%
+    backrefpage  = {see p.}, % for single page number
+    backrefpages = {see pp.} % for multiple page numbers
+}
+% suppress 'in:'
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{\printtext{\bibstring{in}\intitlepunct}}}
+% document preamble
+% removes period at the very end of bibliographic record
+\renewcommand{\finentrypunct}{}
+% removes pagination (p./pp.) before page numbers
+\DeclareFieldFormat{pages}{#1}
+% remove month and issn
+\AtEveryBibitem{\ifentrytype{article}{\clearfield{issn}}{}}
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+% Uncomment the following command to specify a remote path for the bib file
+%\providecommand*{\bibpath}{path/to/bib}
+\bibliography{dissertation.bib}
+
+%-- for works around, packages conflicts----
+%-- redefine toc macros ------of babel package
+%
+ \addto\captionsenglish{%
+ \renewcommand\chaptername{CHAPTER}%
+ \renewcommand\appendixname{APPENDIX}%
+ \renewcommand\indexname{INDEX}%
+ \renewcommand{\contentsname}{TABLE OF CONTENTS}%
+ \renewcommand{\listfigurename}{LIST OF FIGURES\addcontentsline{toc}{bodychapter}{LIST OF FIGURES}}%
+ \renewcommand{\listtablename}{LIST OF TABLES\addcontentsline{toc}{bodychapter}{LIST OF TABLES}}%
+ }
+ 
+
+%-- misc---
+\usepackage{latexsym}
+ \providecommand*{\thefootnote}{\fnsumbol{footnote}}
+
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+ frame = single,
+ breaklines = true,
+postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}}
+}
+
+\usepackage[inline]{enumitem}
+\setlist{nolistsep} % or \setlist{noitemsep}
+
+%% -- links ---
+\usepackage{hyperref}
+\hypersetup{
+colorlinks,%
+citecolor=black,%
+filecolor=black,%
+linkcolor=black,%
+urlcolor=black
+} % make all links black
+% to set pdf in a preset view
+% pdfstartview:
+\hypersetup{pdfstartview={XYZ null null 1.00}}
+% http://tex.stackexchange.com/questions/128879/defined-acronymname-is-not-used-in-toc-but-the-standard-acronyms-why
+% solve the acronym name in TOC issue
+% using addcontentsline{toc}{chapter}{\acronymname} command
+% to add List of Abbreviation into TOC, instead of using the toc option provided by glossaries package
+% probably due to the renewcommand for changing list of abbre name is not respected
+% when the glossaries packge add the index to TOC; 
+% it always tries to use acronym, which is probably the default name
+% However, this workaround may have pagenumbering issues for long list of abbre
+\usepackage[acronym,toc,nonumberlist,nopostdot,nogroupskip]{glossaries} % loaded after hyperref

@@ -1,0 +1,27 @@
+   \newacronym{afm}{AFM}{atomic force microscopy}
+   
+   \newacronym{bse}{BSE}{backscattering electron}
+   
+   \newacronym{cvd}{CVD}{chemical vapor deposition}
+   
+   \newacronym{pvd}{PVD}{physical vapor deposition}
+   
+   \newacronym{sem}{SEM}{scanning electron microscopy}
+   
+   \newacronym{xrd}{XRD}{X-ray diffraction}
+   
+
+   \makeglossaries
+   
+
+\newglossarystyle{mysuper3col}{%
+  \renewenvironment{theglossary}%
+    {\tablehead{}\tabletail{}%
+     \begin{supertabular}{rp{0.1\textwidth}p{\glsdescwidth}}}%
+    {\end{supertabular}}%
+  \renewcommand*{\glossaryheader}{}%
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand*{\glossaryentryfield}[5]{%
+    \glstarget{##1}{##2} &  & ##3\\}%
+  \renewcommand*{\glsgroupskip}{}%
+}

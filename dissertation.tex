@@ -3,8 +3,10 @@
 
 \usepackage{packages/thesis}
 % This line makes sure that single-line captions won't automatically center. 
-\usepackage{caption} % Should this move to unccspecs.sty?
-\captionsetup{singlelinecheck=false}
+%\usepackage{caption} % Should this move to unccspecs.sty?
+%\captionsetup{singlelinecheck=false}
+\input{packages/packagebeta.tex}
+\input{chapters/abbre.tex}
 
 %%%%%%%%%%%%%%% OPTIONAL PACKAGES YOU MAY WANT TO CONSIDER %%%%%%%%%%%%%%%
 % Uncomment the \usepackage{} command to add the environments to your document. Note that Miktex may need to download the package the first time you add the package, so be patient, especially if you enable a lot of these packages at once.
@@ -92,8 +94,8 @@
 % These should be self-explanatory.
 
 \degree{Doctor of Philosophy}
-\major{Computing and Information Systems}
-\publicationyear{2013}
+\major{This probably determines whether your resume will be reviewed or not at all}
+\publicationyear{2015}
 
 \advisor{Dr. My Advisor}
 
@@ -123,6 +125,15 @@ We would like to thank ..............
 }
 
 \listofcontentsfigurestables
+\newpage
+\renewcommand{\glossarypreamble}{\thispagestyle{myheadings}}
+\renewcommand{\acronymname}{LIST OF ABBREVIATIONS}
+\addcontentsline{toc}{bodychapter}{\acronymname}
+%\glsaddall
+\setlength{\glsdescwidth}{0.5\textwidth}
+\glossarystyle{mysuper3col}
+\printglossary[type=\acronymtype, toctitle=\acronymname]
+
 
 \startbody
 
@@ -135,13 +146,24 @@ We would like to thank ..............
 
 \clearpage 
 
-\startbib
+%\startbib
 
-\bibliography{dissertation}
+%\bibliography{dissertation}
 
-\finishbib
-\clearpage 
-\input{chapters/appendix.tex}
+%\finishbib
+%\clearpage 
+%\input{chapters/appendix.tex}
+
+\renewcommand{\refname}{%
+REFERENCES%
+\vspace{\baselineskip}%
+}
+%\printbibheading
+\begin{singlespace}
+\addcontentsline{toc}{bodychapter}{REFERENCES}
+\setlength{\bibitemsep}{\baselineskip}
+  \printbibliography
+\end{singlespace}
 
 %\begin{publications}
 %  \pubitem{Yi Shen, Publication1}

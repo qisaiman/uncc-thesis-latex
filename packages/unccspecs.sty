@@ -27,12 +27,29 @@
 % Use this package for double spacing.
 \usepackage[nodisplayskipstretch]{setspace}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin customization 
+\usepackage{etoolbox}
+
+\apptocmd\normalsize{%
+ \abovedisplayskip=10pt plus 2pt minus 9pt
+ \abovedisplayshortskip=0pt plus 3pt
+ \belowdisplayskip=10pt plus 2pt minus 9pt
+ \belowdisplayshortskip=7pt plus 3pt minus 4pt
+}{}{}
+
+\BeforeBeginEnvironment{equation}{\begin{singlespace}}
+\AfterEndEnvironment{equation}{\end{singlespace}\noindent\ignorespaces}
+\BeforeBeginEnvironment{align}{\begin{singlespace}}
+\AfterEndEnvironment{align}{\end{singlespace}\noindent\ignorespaces}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end customization 
+
 % These 2 packages work together to format sectioning commands
 % and format the table of contents.
 % Note: to get table of contents to work correctly, you must
 % run latex twice.
 \usepackage[rm,md,up,tiny,center,compact]{titlesec}
-\usepackage[dotinlabels]{titletoc}
+%\usepackage[dotinlabels]{titletoc}
+\usepackage{titletoc}
 
 % This package is for conditional statements.
 \usepackage{ifthen}
@@ -80,11 +97,19 @@
 %DOSINGLE Comment next line out  to single space for review purposes
 \doublespacing
 % command from setspace package to invoke doublespacing
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin customization 
+\renewcommand{\ps@myheadings}{
+  \renewcommand{\@oddhead}{ \thepage} % put page number into header
+  \renewcommand{\@evenhead}{ \thepage}
+  %\renewcommand{\@oddfoot}{Complied on \hfill \today \hfill at \currenttime} % for version control 
+  \renewcommand{\@oddfoot}{}
+  \renewcommand{\@evenfoot}{}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end customization 
 \pagestyle{myheadings}
 % This makes my own style headings (withpagenumber in upper rt. corner).
 
-\markright{}
+%\markright{}
 % This will put page number in right corner without anyother text in header.
 % (Footer will be blank.)
 
@@ -395,43 +420,43 @@ ABSTRACT\\
 ACKNOWLEDGMENTS\\
 
 \vspace{\baselineskip}
-\vspace{\baselineskip}
+%\vspace{\baselineskip}
 \end{singlespace}
 \end{centering}
 
 #1
 \newpage
 }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% begin customization 
+% \newenvironment{publications}
+% {
+  % \newpage
+  % \begin{singlespace}
+  % \renewcommand*{\refname}{
+    % PUBLICATIONS
+    % \vspace{\baselineskip}
+    % \vspace{\baselineskip}
+  % }
+  % \begin{thebibliography}{99}
+% }
+% {
+% \end{thebibliography}
+% \end{singlespace}
+% \renewcommand*{\refname}{
+% REFERENCES
+% \vspace{\baselineskip}
+% \vspace{\baselineskip}
+% }
+% }
 
-\newenvironment{publications}
-{
-  \newpage
-  \begin{singlespace}
-  \renewcommand*{\refname}{
-    PUBLICATIONS
-    \vspace{\baselineskip}
-    \vspace{\baselineskip}
-  }
-  \begin{thebibliography}{99}
-}
-{
-\end{thebibliography}
-\end{singlespace}
-\renewcommand*{\refname}{
-REFERENCES
-\vspace{\baselineskip}
-\vspace{\baselineskip}
-}
-}
+% \newcommand{\pubitem}[1]{\bibitem{} #1}
 
-\newcommand{\pubitem}[1]{\bibitem{} #1}
-
-% The following commands will be used for formatting the bibliography.
-\renewcommand*{\refname}{
-REFERENCES
-\vspace{2ex}
-\vspace{\baselineskip}
-}
+%The following commands will be used for formatting the bibliography.
+% \renewcommand*{\refname}{
+% REFERENCES
+% \vspace{2ex}
+% \vspace{\baselineskip}
+% }
 
 
 % Redefines the title of the bibliography.
@@ -439,19 +464,19 @@ REFERENCES
 %\addcontentsline{toc}{chapter}{\bibname}}
 %\newcommand{\finishbibliography}{\end{thebibliography}}
 
-\newcommand{\startbib}{
-\newpage
-\begin{singlespace}
-\addcontentsline{toc}{bodychapter}{REFERENCES}
-\bibliographystyle{abbrv}
-}
+% \newcommand{\startbib}{
+% \newpage
+% \pagestyle{myheadings}
+% \begin{singlespace}
+% \addcontentsline{toc}{bodychapter}{REFERENCES}
 
-\newcommand{\finishbib}{\end{singlespace}}
+% }
 
+% \newcommand{\finishbib}{\end{singlespace}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% end customization 
 
 % This redefines the table of contents title.
 \renewcommand*{\contentsname}{TABLE OF CONTENTS}
-
 \renewcommand*{\listtablename}{LIST OF TABLES \vspace*{2ex}\addcontentsline{toc}{bodychapter}{LIST OF TABLES}}
 \renewcommand*{\listfigurename}{LIST OF FIGURES \vspace*{2ex}\addcontentsline{toc}{bodychapter}{LIST OF FIGURES}}
 
@@ -470,9 +495,11 @@ REFERENCES
 
 \titlespacing{\chapter}{0pt}{-0.375in}{.1875in}
 
-
+% \titleformat{command}[shape]{format}{label}{sep}{before-code}[after-code]
 % Parameter -.25in isneeded to reduce the 1.25in space from top edge
 % of paper to chapter title that alreadyexists to make space = 1in.
+
+%%% this centering also affect the TOC, LOF, and LOT since they are special sections.
 
 % Format \section command
 \titleformat{\section}[block]{\normalfont\mdseries\centering}
@@ -487,13 +514,13 @@ REFERENCES
 \titlespacing{\subsection}{0pt}{.0625in}{.0625in}
 
 % Format \subsubsection command
-\titleformat{\subsubsection}[block]{\normalfont\mdseries\centering}
+\titleformat{\subsubsection}[block]{\normalfont\mdseries}
 {\thesubsubsection}
 {1.5em}{\normalfont\mdseries}
 \titlespacing{\subsubsection}{0pt}{.0625in}{.0625in}
 
 % Format \subsubsubsection command
-\titleformat{\subsubsubsection}[block]{\normalfont\mdseries\centering}
+\titleformat{\subsubsubsection}[block]{\normalfont\mdseries}
 {\thesubsubsubsection}
 {1.5em}{\normalfont\mdseries}
 \titlespacing{\subsubsubsection}{0pt}{.0625in}{.0625in}
@@ -530,31 +557,31 @@ REFERENCES
 
 
 % Format \bodysection command
-\titleformat{\bodysection}[block]{\normalfont\mdseries\centering}
+\titleformat{\bodysection}[block]{\normalfont\mdseries}
 {\thebodysection}
 {1.5em}{\normalfont\mdseries}[\setcounter{bodysubsection}
 {0}\setcounter{bodysubsubsection}{0}\setcounter{bodysubsubsubsection}{0}] %\setfigurecounters]
-\titlespacing{\bodysection}{0pt}{.0625in}{.0625in}
+\titlespacing{\bodysection}{0pt}{1pt}{1pt}
 
 
 
 % Format \bodysubsection command
-\titleformat{\bodysubsection}[block]{\normalfont\mdseries\centering}
+\titleformat{\bodysubsection}[block]{\normalfont\mdseries}
 {\thebodysubsection}
 {1.5em}{\normalfont\mdseries}
 [\setcounter{bodysubsubsection}{0}\setcounter{bodysubsubsubsection}{0}] %\setfigurecounters]
-\titlespacing{\bodysubsection}{0pt}{.0625in}{.0625in}
+\titlespacing{\bodysubsection}{0pt}{1pt}{1pt}
 
 
 
 % Format \bodysubsubsection command
-\titleformat{\bodysubsubsection}[block]{\normalfont\mdseries\centering}
+\titleformat{\bodysubsubsection}[block]{\normalfont\mdseries}
 {\thebodysubsubsection}
 {1.5em}{\normalfont\mdseries}[\setcounter{bodysubsubsubsection}{0}] %[\setfigurecounters]
-\titlespacing{\bodysubsubsection}{0pt}{.0625in}{.0625in}
+\titlespacing{\bodysubsubsection}{0pt}{1pt}{1pt}
 
 % Format \bodysubsubsubsection command
-\titleformat{\bodysubsubsubsection}[block]{\normalfont\mdseries\centering}
+\titleformat{\bodysubsubsubsection}[block]{\normalfont\mdseries}
 {\thebodysubsubsubsection}
 {1.5em}{\normalfont\mdseries} %[\setfigurecounters]
 \titlespacing{\bodysubsubsubsection}{0pt}{.0625in}{.0625in}
